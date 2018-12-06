@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">android_claves</string>
+    <string name="btnAcceptLogin">Ingresar</string>
+    <string name="btnCloseLogin">Salir</string>
+    <string name="etPasswordLoginHint">Contraseña</string>
+    <string name="etUserLoginHint">Usuario</string>
+    <string name="tvNewUserLogin">Crea una cuenta aquí</string>
+    <string name="tvLoginLogin">Ingreso</string>
+    <string name="userLoginIsEmpty">Debe ingresar un usuario</string>
+    <string name="passLoginIsEmpty">Debe ingresar una contraseña</string>
+    <string name="userLoginIsWrong">El usuario no existe</string>
+    <string name="passLoginIsWrong">La contraseña no es correcta</string>
+
+</resources>
