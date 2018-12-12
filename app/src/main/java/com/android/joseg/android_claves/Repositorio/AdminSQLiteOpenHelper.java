@@ -38,11 +38,11 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
     }
 
-    public List<Password> obtenerClavesDeUsaurio(Usuario usuarioProp, Context context){
+    public List<Password> obtenerClavesDeUsaurio(String usuarioProp, Context context){
         AdminSQLiteOpenHelper adminBD = new AdminSQLiteOpenHelper(context,"administracion",null,1);
         SQLiteDatabase db = adminBD.getWritableDatabase();
 
-        String query = "select titulo, url, user, pass, observaciones, user_prop from password where user_prop = " + "'"+usuarioProp.getUser() + "'";
+        String query = "select titulo, url, user, pass, observaciones, user_prop from password where user_prop = " + "'"+usuarioProp + "'";
         Cursor cursor = db.rawQuery(query,null);
         List<Password> lista = new ArrayList<>();
 
@@ -83,5 +83,73 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         db.close();
         return true;
     }
+
+    public boolean eliminarClave(Password password, Context context){
+        AdminSQLiteOpenHelper adminBD = new AdminSQLiteOpenHelper(context,"administracion",null,1);
+        SQLiteDatabase db = adminBD.getWritableDatabase();
+
+        // los inserto en la base de datos
+        String[] whereArgs = {password.getUserDueno()};
+        db.delete("password", "user_prop = ?", whereArgs);
+        db.close();
+        return true;
+    }
+
+    public Usuario obtenerUsuario(String usuarioProp, Context context){
+        AdminSQLiteOpenHelper adminBD = new AdminSQLiteOpenHelper(context,"administracion",null,1);
+        SQLiteDatabase db = adminBD.getWritableDatabase();
+
+        String query = "select titulo, url, user, pass, observaciones, user_prop from password where user_prop = " + "'"+usuarioProp + "'";
+        Cursor cursor = db.rawQuery(query,null);
+        List<Password> lista = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                Password passwordRow = new Password(
+                        cursor.getString(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5)
+                );
+                lista.add(passwordRow);
+            } while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return null;
+    }
+
+    public boolean modificarClave(Password password, Context context){
+        AdminSQLiteOpenHelper adminBD = new AdminSQLiteOpenHelper(context,"administracion",null,1);
+        SQLiteDatabase db = adminBD.getWritableDatabase();
+
+        ContentValues registro = new ContentValues();
+
+        registro.put("titulo", password.getTitulo());
+        registro.put("url", password.getUrl());
+        registro.put("user", password.getUser());
+        registro.put("pass", password.getPass());
+        registro.put("observaciones", password.getObservaciones());
+        registro.put("user_prop", password.getUserDueno());
+
+        String whereClause = "titulo = ?";
+        String[] whereArgs = { password.getTitulo() };
+
+        int affectedRows = db.update(
+                "password",
+                registro,
+                whereClause,
+                whereArgs
+        );
+
+        db.close();
+        return true;
+    }
+
+
+
 
 }

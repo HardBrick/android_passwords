@@ -10,5 +10,8 @@
     <string name="passLoginIsEmpty">Debe ingresar una contraseña</string>
     <string name="userLoginIsWrong">El usuario no existe</string>
     <string name="passLoginIsWrong">La contraseña no es correcta</string>
+    <string name="msgDeletePassword">¿Está seguro que desea eliminar esta clave?</string>
+    <string name="yes">Sí</string>
+    <string name="cancel">Cancelar</string>
 
 </resources>

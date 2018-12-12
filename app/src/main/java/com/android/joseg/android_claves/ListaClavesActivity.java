@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -38,25 +39,25 @@ public class ListaClavesActivity extends AppCompatActivity {
         btnActualizarVista = (Button) findViewById(R.id.btnActualizarVista);
         floatbtnNewPasswordList = (FloatingActionButton) findViewById(R.id.floatbtnNewPasswordList);
 
-        Usuario userReg=null;
+       final String userReg = getIntent().getStringExtra("user");
         try{
-            Usuario user = (Usuario) getIntent().getSerializableExtra("user");
-            tvUserLista.setText(user.getUser());
-            List<Password> listaPasswords = adminBD.obtenerClavesDeUsaurio(user,this);
+
+            tvUserLista.setText(userReg);
+            List<Password> listaPasswords = adminBD.obtenerClavesDeUsaurio(userReg,this);
             ArrayAdapter<Password> adapter = new ArrayAdapter<Password>(this,android.R.layout.simple_list_item_1,listaPasswords);
             lvPasswords.setAdapter(adapter);
-            userReg=user;
+
 
         }catch (Exception e){
             Log.d("TAG_", e.getMessage());
         }
-        final Usuario user = userReg;
+
 
         floatbtnNewPasswordList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ListaClavesActivity.this, IngresaModificaClaveActivity.class);
-                intent.putExtra("user",user);
+                intent.putExtra("user",userReg);
                 startActivity(intent);
             }
         });
@@ -64,20 +65,27 @@ public class ListaClavesActivity extends AppCompatActivity {
         btnActualizarVista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Password> listaPasswords = adminBD.obtenerClavesDeUsaurio(user,ListaClavesActivity.this);
+                List<Password> listaPasswords = adminBD.obtenerClavesDeUsaurio(userReg,ListaClavesActivity.this);
                 ArrayAdapter<Password> adapter = new ArrayAdapter<Password>(ListaClavesActivity.this,android.R.layout.simple_list_item_1,listaPasswords);
                 lvPasswords.setAdapter(adapter);
             }
         });
 
+        lvPasswords.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Password pass = (Password) lvPasswords.getItemAtPosition(i);
+                Intent intent = new Intent(ListaClavesActivity.this,DetalleClaveActivity.class);
+                intent.putExtra("pass",pass);
+                startActivity(intent);
+            }
+        });
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-
-
-
-
-
-
+    }
 }

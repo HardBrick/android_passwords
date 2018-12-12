@@ -38,8 +38,17 @@ public class IngresaModificaClaveActivity extends AppCompatActivity {
         btnGuardarClave = (Button)findViewById(R.id.btnGuardarClave);
         btnLimpiarClave = (Button)findViewById(R.id.btnLimpiarClave);
 
+        String userReg = null;
+        Password pass = null;
+        try{
+             userReg = getIntent().getStringExtra("user");
+             pass = (Password) getIntent().getSerializableExtra("pass");
+        }catch (Exception e){
+        }
 
-        final Usuario userReg = (Usuario)(getIntent().getSerializableExtra("user"));
+        final String userRegistrado = userReg;
+        final Password passwordAsoc = pass;
+
 
 
         btnGuardarClave.setOnClickListener(new View.OnClickListener() {
@@ -71,11 +80,15 @@ public class IngresaModificaClaveActivity extends AppCompatActivity {
                             user,
                             pass,
                             obs,
-                            userReg.getUser()
+                            ((passwordAsoc == null) ? userRegistrado : passwordAsoc.getUserDueno())
                     );
 
-                    adminBD.insertClave(password,IngresaModificaClaveActivity.this);
-                    Toast.makeText(IngresaModificaClaveActivity.this, "Clave resgistrada con éxito!", Toast.LENGTH_SHORT).show();
+                    if(passwordAsoc==null){
+                        adminBD.insertClave(password,IngresaModificaClaveActivity.this);
+                    }else{
+                        adminBD.modificarClave(password,IngresaModificaClaveActivity.this);
+                    }
+                    Toast.makeText(IngresaModificaClaveActivity.this, "Clave guardada con éxito!", Toast.LENGTH_SHORT).show();
                 }
 
 

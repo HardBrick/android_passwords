@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListaClavesActivity" />
-        <activity android:name=".IngresaModificaClaveActivity"></activity>
+        <activity android:name=".IngresaModificaClaveActivity" />
+        <activity android:name=".DetalleClaveActivity"></activity>
     </application>
 
 </manifest>
