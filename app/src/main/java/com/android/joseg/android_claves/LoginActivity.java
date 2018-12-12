@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.joseg.android_claves.Modelo.Usuario;
+
 public class LoginActivity extends AppCompatActivity {
 
     TextView tvLoginLogin;
@@ -50,8 +52,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(user.equals("admin")){
                         if(pass.equals("admin")){
+                            Usuario usuarioReg = new Usuario(user,pass);
                             Intent i = new Intent(LoginActivity.this , ListaClavesActivity.class);
-                            i.putExtra("user",user);
+                            i.putExtra("user",usuarioReg);
                             startActivity(i);
                         }else {
                             etPasswordLogin.setError(getResources().getString(R.string.passLoginIsWrong));
